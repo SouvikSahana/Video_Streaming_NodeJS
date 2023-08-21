@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files</title>
+    <style>
+        #container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 8px;
+            width: 300px;
+            box-sizing: border-box;
+        }
+        .img{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h3>Your videos list:</h3>
+    <div id="container">
+
+    </div>
+    <script>
+        const container= document.getElementById('container')
+        async function getData(){
+            const response=await fetch('http://localhost:5000/videolist')
+            const data=await response.json()
+            data.forEach((item)=>{
+                const link = document.createElement('a');
+                link.href = item.link;
+                link.style.textDecoration="none"
+
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('item');
+
+                const image = document.createElement('img');
+                image.src = "./thumbnail/"+item.imageSrc ;
+                image.classList.add('img')
+
+                const name = document.createElement('h4');
+                name.textContent = item.name;
+                name.style.overflow="hidden"
+                
+                itemDiv.appendChild(image);
+                itemDiv.appendChild(name);
+                link.appendChild(itemDiv)
+                container.appendChild(link);
+            })
+        }
+        getData()
+    </script>
+</body>
+</html>
